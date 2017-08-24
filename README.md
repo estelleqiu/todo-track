@@ -6,7 +6,7 @@ DevelopmentDEV:
 1. React 
 2. Webpack
 
-![end_of_chapter1](https://cloud.githubusercontent.com/assets/33676/10971478/9db2d9d2-83bb-11e5-8603-5a19b21376a8.png)
+![end_of_chapter1](./public/todo-things.png)
 
 
 
