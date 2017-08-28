@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import CardList from './CardList'
+import { CSSTransitionGroup } from 'react-transition-group'
+import Task from './Task'
 
 class Card extends Component {
     constructor(){
@@ -12,7 +13,7 @@ class Card extends Component {
     render(){
         let tasks;
         if (this.state.cardShow){
-             tasks = (<CardList tasks = {this.props.tasks}/>)
+             tasks = (<Task tasks = {this.props.tasks}/>)
         };
         return(
             <div className = "card">
@@ -22,7 +23,12 @@ class Card extends Component {
                     </div>
                     {this.props.description}
                 </div>
-                {tasks}
+                <CSSTransitionGroup 
+                    transitionName ="toggle" 
+                    transitionEnterTimeout={250}
+                    transitionLeaveTimeout={250}>
+                    {tasks}
+                </CSSTransitionGroup>
             </div>
         )
     }

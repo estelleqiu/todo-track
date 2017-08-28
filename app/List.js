@@ -1,22 +1,18 @@
 import React, { Component }from 'react';
+import { CSSTransitionGroup } from 'react-transition-group'
+import AddCardBoard from './AddCardBoard'
 import Card from './Card';
-import AddItem from './AddItem'
 
 class List extends Component{
     constructor(){
         super(...arguments);
         this.state = {
-            AddItemInput: false,
+            AddItemIsDisplay: false,
             Cards: this.props.cards}
     }
 
-    addItem(){
-        this.setState({AddItemInput: true})
-    };
-
-    _handleKeyPress(e){
-        this.handleAddEvent(e.target.value)
-        this.setState({AddItemInput: false})
+    addItemBoradDisplay(){
+        this.setState({AddItemIsDisplay: true})
     };
 
     handleAddEvent(value){
@@ -39,17 +35,22 @@ class List extends Component{
                          tasks={card.tasks}/>
         });
 
-        let itemInput;
-        if (this.state.AddItemInput) {
-            itemInput =  (<AddItem _handleKeyPress = {this._handleKeyPress.bind(this)}/>)
+        let addCardItem;
+        if (this.state.AddItemIsDisplay) {
+            addCardItem =  (<AddCardBoard handleSaveTask = {this.props.handleSaveTask}/>)
         };
 
         return(
             <div className = "list">
                 <h1>{this.props.title}</h1>
                 {cards}
-                {itemInput}
-                <button onClick= {this.addItem.bind(this)}> + note</button>
+                <CSSTransitionGroup 
+                    transitionName ="toggle" 
+                    transitionEnterTimeout={250}
+                    transitionLeaveTimeout={250}>
+                    {addCardItem}
+                </CSSTransitionGroup>
+                <button onClick= {this.addItemBoradDisplay.bind(this)}> + note</button>
             </div>
         )
     }

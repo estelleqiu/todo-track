@@ -24,7 +24,9 @@ var config = {
     contentBase: "./public",
     colors: true,
     historyApiFallback: true,
-    inline: true
+    inline: true,
+    host: "esqiu.thebump.com",
+    port: 4000
   },
 }
 

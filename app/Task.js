@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class CardList extends Component{
+class Task extends Component{
     constructor(){
         super(...arguments);
         this.state = {tasks: this.props.tasks};
@@ -11,21 +11,12 @@ class CardList extends Component{
         this.setState({tasks: items});
     };
 
-    handleInputChange(event,task){
-        const target = event.target;
-        const value = target.checked;
-        this.setState({
-            checkbox: true
-            
-        })
-        this.handleRemove(task)
-    }
     render(){
         let task  = (
             this.state.tasks.map((task) => {
                 return (
                     <li key= {task.id} id = {task.id}>
-                        <input type="checkbox" onChange={this.handleInputChange.bind(this,task)} />
+                        <input type="checkbox"/>
                         {task.name}
                         <a href="#" className="checklist__task--remove" onClick={
                             this.handleRemove.bind(this, task)}/>
@@ -41,4 +32,4 @@ class CardList extends Component{
     }
 }
 
-export default CardList;
+export default Task;

@@ -1,26 +1,33 @@
 import React, {Component} from 'react';
+import { CSSTransitionGroup } from 'react-transition-group'
 
-class TaskItem extends Component{
+class TaskList extends Component{
     constructor(){
         super(...arguments);
-        this.state = {
-            Id: this.props.id,
-            Name: 'this.props.name',
-            Done: 'this.props.done'
-        }
     };
-    handleChange(type, event){
-        this.setState({[type]: event.target.value},()=> console.log(this.state))
-        this.props.handleChange(this.state)
-    };
+
     render(){
+        let taskCollection = this.props.taskList.map((task) => {
+            return (<li key= {task.id}
+                        id = {task.id}
+                        className = "task-item">
+                        <input className = "task-checkbox" type="checkbox" onChange = {this.props}/>
+                        <input className = "task-name"/>
+                    </li>
+            )
+        })
         return (
-            <li id = {this.props.id} className = "task-item">
-                <input className = "task-checkbox" type="checkbox" onChange={this.handleChange.bind(this,'Done')}/>
-                <input className = "task-name" onChange={this.handleChange.bind(this,'Name')}/>
-            </li>
+            <ul className = "task-list">
+                <label>tasks</label>
+                <CSSTransitionGroup 
+                    transitionName ="toggle" 
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}>
+                    {taskCollection}
+                </CSSTransitionGroup >
+            </ul>
         )
     }
 }
 
-export default TaskItem;
+export default TaskList;
