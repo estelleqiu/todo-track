@@ -6,44 +6,43 @@ class AddCardBoard extends Component{
     constructor(){
         super(...arguments);
         this.state = {
+            id: null,
+            name: '',
+            description: '',
             tasks: [{
                 id: 1,
-                name: '',
+                name: "",
                 done: false
             }]
         }
     };
 
-    handleAddTask(){
-        const id = this.state.tasks.length + 1;
-        const taskItem = {
-            id: id,
-            name: '',
-            done: false
+    _onChange(e) {
+        var state = {};
+        if(e.target.name == 'tasks'){
+            let nextState = update(this.state.tasks, {
+                name: {
+                    $set: e.target.value
+                }
+            })
+        }else {
+            state[e.target.name] =  (e.target.value).trim();
         }
+        this.setState(state);
+        console.log(this.state)
+    };
 
-        let nextState = update(this.state.tasks, {
-          $push: [taskItem]
-        })
-
-        this.setState({tasks: nextState})
-    }
-
-    getTaskInfo(cardId, taskIndex, taskName){
-        return cardId, taskIndex, taskName
-    }
-
-    handleSaveTask(){
-        this.props.handleSaveTask(getTaskInfo())
-    }
     render(){
         return (
            <form className = "addItem">
-                <label>title</label><input />
+                <label>title</label><input name="name" onChange={this._onChange.bind(this)} />
+                <label>description</label><input name="description" onChange={this._onChange.bind(this)}/>
                 <TaskList taskList = {this.state.tasks} 
-                          getTaskInfo = {this.getTaskInfo.bind(this)}/>
-                <button onClick = {this.handleAddTask.bind(this)}> + add card</button>
-                <button onClick = {this.props.handleSaveTask} type="submit">save card</button>
+                          cardId = {5}
+                          callBackfunc = {this.props.callBackfunc}
+                          onChange = {this._onChange.bind(this)}/>
+                <a onClick = {this.props.callBackfunc.addCardAndTask.bind(this)}> + add card</a>
+                <a type="submit">save card</a>
             </form>
         )
     }

@@ -47,7 +47,7 @@
     padding: 25px;
   }
 
-  .list button{
+  .list button,a{
     padding: 10px;
     background: rgb(23, 44, 81);
     border: 0px solid;
@@ -57,6 +57,8 @@
     margin-top: 20px;
     cursor: pointer;
     outline: none;
+    display: inline-block;
+    font-size: 10px;
   }
 
   .list:not(:last-child):after{
@@ -129,7 +131,7 @@
     vertical-align: middle;
   }
 
-  .addItem button:last-child {
+  .addItem a:last-child {
     float: right;
   }
   .addItem label {

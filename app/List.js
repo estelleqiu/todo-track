@@ -29,15 +29,18 @@ class List extends Component{
 
     render(){
         var cards = this.state.Cards.map((card)=>{
-            return <Card key={card.id}
+            return <Card key = {card.id}
+                         cardId = {card.id}
                          title = {card.title}
-                         description={card.description}
-                         tasks={card.tasks}/>
+                         description = {card.description}
+                         tasks = {card.tasks}/>
         });
 
         let addCardItem;
         if (this.state.AddItemIsDisplay) {
-            addCardItem =  (<AddCardBoard handleSaveTask = {this.props.handleSaveTask}/>)
+            addCardItem =  (<AddCardBoard listStatus = {this.props.title} 
+                                          cards = {this.state.Cards} 
+                                          callBackfunc = {this.props.callBackfunc}/>)
         };
 
         return(
