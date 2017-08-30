@@ -7,28 +7,16 @@ class List extends Component{
     constructor(){
         super(...arguments);
         this.state = {
-            AddItemIsDisplay: false,
-            Cards: this.props.cards}
+            AddItemIsDisplay: false
+        }
     }
 
-    addItemBoradDisplay(){
-        this.setState({AddItemIsDisplay: true})
-    };
-
-    handleAddEvent(value){
-        const id = (this.state.Cards.length);
-        const card = {
-            id: id,
-            title: value,
-            description: "",
-            tasks: []
-        }
-        this.state.Cards.push(card);
-        this.setState({Cards: this.state.Cards})
+    addCardBoradDisplay(){
+        this.setState({AddItemIsDisplay: !this.state.AddItemIsDisplay})
     };
 
     render(){
-        var cards = this.state.Cards.map((card)=>{
+        var cards = this.props.cards.map((card)=>{
             return <Card key = {card.id}
                          cardId = {card.id}
                          title = {card.title}
@@ -38,9 +26,10 @@ class List extends Component{
 
         let addCardItem;
         if (this.state.AddItemIsDisplay) {
-            addCardItem =  (<AddCardBoard listStatus = {this.props.title} 
+            addCardItem =  (<AddCardBoard listStatus = {this.props.id} 
                                           cards = {this.state.Cards} 
-                                          callBackfunc = {this.props.callBackfunc}/>)
+                                          callBackfunc = {this.props.callBackfunc}
+                                          addCardBoradDisplay = {this.addCardBoradDisplay.bind(this)}/>)
         };
 
         return(
@@ -53,7 +42,7 @@ class List extends Component{
                     transitionLeaveTimeout={250}>
                     {addCardItem}
                 </CSSTransitionGroup>
-                <button onClick= {this.addItemBoradDisplay.bind(this)}> + note</button>
+                <button onClick= {this.addCardBoradDisplay.bind(this)}> + note</button>
             </div>
         )
     }

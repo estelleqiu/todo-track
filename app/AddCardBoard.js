@@ -2,47 +2,67 @@ import React, {Component} from 'react';
 import update from 'immutability-helper';
 import TaskList from './AddTask';
 
+
+const taskInitialItem = {
+    id: 1,
+    name: "",
+    done: false
+}
+
 class AddCardBoard extends Component{
     constructor(){
         super(...arguments);
         this.state = {
             id: null,
-            name: '',
+            title: '',
             description: '',
-            tasks: [{
-                id: 1,
-                name: "",
-                done: false
-            }]
+            status: this.props.listStatus,
+            tasks: [taskInitialItem]
         }
     };
 
-    _onChange(e) {
+    _onChange(taskId,e) {
+        const taskIndex = this.state.tasks.findIndex((task) => task.id == taskId )
         var state = {};
         if(e.target.name == 'tasks'){
             let nextState = update(this.state.tasks, {
-                name: {
-                    $set: e.target.value
+                [taskIndex]: {
+                    name: {
+                        $set: e.target.value
+                    }
                 }
             })
+            this.setState({tasks: nextState})
         }else {
             state[e.target.name] =  (e.target.value).trim();
+            this.setState(state);
         }
-        this.setState(state);
-        console.log(this.state)
     };
+    addTask(){
+        const task = Object.assign({}, taskInitialItem)
+        task.id = this.state.tasks.length + 1;
+        const nextStatus = update(this.state.tasks, {
+            $push: [task]
+        })
+        this.setState({tasks: nextStatus}, () => {
+        })
+    }
+
+    handleAddCard(){
+        this.props.callBackfunc.addCardAndTask(this.state)
+        this.props.addCardBoradDisplay()
+    }
 
     render(){
         return (
            <form className = "addItem">
-                <label>title</label><input name="name" onChange={this._onChange.bind(this)} />
-                <label>description</label><input name="description" onChange={this._onChange.bind(this)}/>
+                <label>title</label><input name="title" onChange={this._onChange.bind(this,null)} />
+                <label>description</label><input name="description" onChange={this._onChange.bind(this,null)}/>
                 <TaskList taskList = {this.state.tasks} 
-                          cardId = {5}
                           callBackfunc = {this.props.callBackfunc}
                           onChange = {this._onChange.bind(this)}/>
-                <a onClick = {this.props.callBackfunc.addCardAndTask.bind(this)}> + add card</a>
-                <a type="submit">save card</a>
+                <a onClick = {this.addTask.bind(this)}> + add card</a>
+                <a onClick = { this.handleAddCard.bind(this)} type="submit">save card</a>
             </form>
         )
     }

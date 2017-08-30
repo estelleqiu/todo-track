@@ -47,7 +47,7 @@
     padding: 25px;
   }
 
-  .list button,a{
+  .list button,.addItem a{
     padding: 10px;
     background: rgb(23, 44, 81);
     border: 0px solid;

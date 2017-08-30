@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import List from './List'
+import update from 'immutability-helper';
 
 class KanbanBoard extends Component{
     constructor(){
         super(...arguments);
-    }
-
-    handleSaveTask(cardId, taskId, taskName){
-        console.log(cardId + ' ' + taskId + ' ' + taskName)
-    }
-
-    addCardAndTask(){
-        const taskId = this.state.tasks.length + 1;
-
-        const taskItem = {
-            id: taskId ,
-            name: '',
-            done: false
+        this.state = {
+            cardList: this.props.cardList
         }
+    }
 
-        let nextState = update(this.state.tasks, {
-            $push: [taskItem]
+    addCardAndTask(cardItem){
+        cardItem.id = this.state.cardList.length + 1  
+        const prevState = this.state.cardList
+        let nextState = update(this.state.cardList, {
+            $push: [cardItem]
         })
+        this.setState({cardList: nextState})
 
-        this.setState({tasks: nextState})
+        localStorage.setItem("todo-things", JSON.stringify(this.state.cardList))
     }
 
     toggleCardAndTask(cardId, taskId, taskIndex){
@@ -44,7 +39,7 @@ class KanbanBoard extends Component{
             }
         })
 
-        this.setState({cards: nextState});    
+        this.setState({cardList: nextState});    
     }
 
     deleteCardAndTask(){
@@ -56,22 +51,19 @@ class KanbanBoard extends Component{
             <div className="app">
                 <List id="todo"
                       title = "TO DO"
-                      cards = {this.props.cardList.filter( (item) => item.status == 'todo')}
-                      handleSaveTask= {this.handleSaveTask.bind(this)}
+                      cards = {this.state.cardList.filter( (item) => item.status == 'todo')}
                       callBackfunc = {{addCardAndTask: this.addCardAndTask.bind(this),
                                        toggleCardAndTask: this.toggleCardAndTask.bind(this),
                                        deleteCardAndTask: this.deleteCardAndTask.bind(this),}}/>
                 <List id="in-progress"
                       title = "In Progress"
-                      cards = {this.props.cardList.filter( (item) => item.status == 'in-progress')}
-                      handleSaveTask= {this.handleSaveTask.bind(this)}
+                      cards = {this.state.cardList.filter( (item) => item.status == 'in-progress')}
                       callBackfunc = {{addCardAndTask: this.addCardAndTask.bind(this),
                                        toggleCardAndTask: this.toggleCardAndTask.bind(this),
                                        deleteCardAndTask: this.deleteCardAndTask.bind(this),}}/>
                 <List id="done"
                       title = "Done"
-                      cards = {this.props.cardList.filter( (item) => item.status == 'done')}
-                      handleSaveTask= {this.handleSaveTask.bind(this)}
+                      cards = {this.state.cardList.filter( (item) => item.status == 'done')}
                       callBackfunc = {{addCardAndTask: this.addCardAndTask.bind(this),
                                        toggleCardAndTask: this.toggleCardAndTask.bind(this),
                                        deleteCardAndTask: this.deleteCardAndTask.bind(this),}}/>
