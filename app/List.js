@@ -21,7 +21,8 @@ class List extends Component{
                          cardId = {card.id}
                          title = {card.title}
                          description = {card.description}
-                         tasks = {card.tasks}/>
+                         tasks = {card.tasks}
+                         callBackfunc = {this.props.callBackfunc}/>
         });
 
         let addCardItem;

@@ -16,30 +16,30 @@ class KanbanBoard extends Component{
         let nextState = update(this.state.cardList, {
             $push: [cardItem]
         })
-        this.setState({cardList: nextState})
-
-        localStorage.setItem("todo-things", JSON.stringify(this.state.cardList))
+        this.setState({cardList: nextState}, ()=> {
+            localStorage.setItem("todo-things", JSON.stringify(this.state.cardList))
+        })
     }
 
-    toggleCardAndTask(cardId, taskId, taskIndex){
+    toggleCardAndTask(cardId, taskIndex, taskName){
         let cardIndex = this.props.cardList.findIndex((card) => card.id == cardId );
         let prevState = this.state;
 
-        let newDoneValue;
-        let nextState = update(this.state.cards, {
+        let nextState = update(this.state.cardList, {
             [cardIndex]: {
-               tasks: {
-                   [taskIndex]:{
-                       done: { $apply: (done) => {
-                           newDoneValue = !done
-                           return newDoneValue
-                       }}
-                   }
-               } 
+                tasks: {
+                    [taskIndex]: {
+                        name: {
+                            $set: taskName
+                        }
+                    }
+                }
             }
         })
 
-        this.setState({cardList: nextState});    
+        this.setState({cardList: nextState},()=> {
+            localStorage.setItem("todo-things", JSON.stringify(this.state.cardList))
+        });
     }
 
     deleteCardAndTask(){

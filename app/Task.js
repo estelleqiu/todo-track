@@ -11,13 +11,18 @@ class Task extends Component{
         this.setState({tasks: items});
     };
 
+    handleInputChange(taskIndex, e){
+        const taskName = e.target.value;
+        this.props.callBackfunc.toggleCardAndTask(this.props.cardId ,taskIndex, taskName)
+    }
+
     render(){
         let task  = (
-            this.state.tasks.map((task) => {
+            this.state.tasks.map((task, taskIndex) => {
                 return (
                     <li key= {task.id} id = {task.id}>
                         <input type="checkbox"/>
-                        {task.name}
+                        <input ref= "taskName" className="taskName" onChange = {this.handleInputChange.bind(this,taskIndex)}  defaultValue = {task.name}/>
                         <a href="#" className="checklist__task--remove" onClick={
                             this.handleRemove.bind(this, task)}/>
                     </li>

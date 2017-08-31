@@ -49,8 +49,8 @@ class AddCardBoard extends Component{
     }
 
     handleAddCard(){
-        this.props.callBackfunc.addCardAndTask(this.state)
         this.props.addCardBoradDisplay()
+        this.props.callBackfunc.addCardAndTask(this.state)
     }
 
     render(){
