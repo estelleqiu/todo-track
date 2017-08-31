@@ -13,7 +13,9 @@ class Card extends Component {
     render(){
         let tasks;
         if (this.state.cardShow){
-             tasks = (<Task tasks = {this.props.tasks}/>)
+             tasks = (<Task tasks = {this.props.tasks}
+                            callBackfunc = {this.props.callBackfunc}
+                            cardId = {this.props.cardId}/>)
         };
         return(
             <div className = "card">
