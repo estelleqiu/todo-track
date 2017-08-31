@@ -34,12 +34,8 @@ let cardList = [
         ]       
     }
 ]
-
-var cardListStore = JSON.parse(localStorage.getItem("todo-things"));
-if (!cardListStore){
-    localStorage.setItem("todo-things", JSON.stringify(cardList));
-    var cardListStore = JSON.parse(localStorage.getItem("todo-things"));
-}
+localStorage.setItem("todo-things", JSON.stringify(cardList));
+let cardListStore = JSON.parse(localStorage.getItem("todo-things"));
 
 render(
     <KanbanBoard cardList = {cardListStore}/>,

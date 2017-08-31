@@ -7,30 +7,40 @@ class List extends Component{
     constructor(){
         super(...arguments);
         this.state = {
-            AddItemIsDisplay: false
-        }
+            AddItemIsDisplay: false,
+            Cards: this.props.cards}
     }
 
-    addCardBoradDisplay(){
-        this.setState({AddItemIsDisplay: !this.state.AddItemIsDisplay})
+    addItemBoradDisplay(){
+        this.setState({AddItemIsDisplay: true})
+    };
+
+    handleAddEvent(value){
+        const id = (this.state.Cards.length);
+        const card = {
+            id: id,
+            title: value,
+            description: "",
+            tasks: []
+        }
+        this.state.Cards.push(card);
+        this.setState({Cards: this.state.Cards})
     };
 
     render(){
-        var cards = this.props.cards.map((card)=>{
+        var cards = this.state.Cards.map((card)=>{
             return <Card key = {card.id}
                          cardId = {card.id}
                          title = {card.title}
                          description = {card.description}
-                         tasks = {card.tasks}
-                         callBackfunc = {this.props.callBackfunc}/>
+                         tasks = {card.tasks}/>
         });
 
         let addCardItem;
         if (this.state.AddItemIsDisplay) {
-            addCardItem =  (<AddCardBoard listStatus = {this.props.id} 
+            addCardItem =  (<AddCardBoard listStatus = {this.props.title} 
                                           cards = {this.state.Cards} 
-                                          callBackfunc = {this.props.callBackfunc}
-                                          addCardBoradDisplay = {this.addCardBoradDisplay.bind(this)}/>)
+                                          callBackfunc = {this.props.callBackfunc}/>)
         };
 
         return(
@@ -43,7 +53,7 @@ class List extends Component{
                     transitionLeaveTimeout={250}>
                     {addCardItem}
                 </CSSTransitionGroup>
-                <button onClick= {this.addCardBoradDisplay.bind(this)}> + note</button>
+                <button onClick= {this.addItemBoradDisplay.bind(this)}> + note</button>
             </div>
         )
     }

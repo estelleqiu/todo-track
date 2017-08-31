@@ -1,45 +1,50 @@
 import React, { Component } from 'react';
 import List from './List'
-import update from 'immutability-helper';
 
 class KanbanBoard extends Component{
     constructor(){
         super(...arguments);
-        this.state = {
-            cardList: this.props.cardList
+    }
+
+    handleSaveTask(cardId, taskId, taskName){
+        console.log(cardId + ' ' + taskId + ' ' + taskName)
+    }
+
+    addCardAndTask(){
+        const taskId = this.state.tasks.length + 1;
+
+        const taskItem = {
+            id: taskId ,
+            name: '',
+            done: false
         }
+
+        let nextState = update(this.state.tasks, {
+            $push: [taskItem]
+        })
+
+        this.setState({tasks: nextState})
     }
 
-    addCardAndTask(cardItem){
-        cardItem.id = this.state.cardList.length + 1  
-        const prevState = this.state.cardList
-        let nextState = update(this.state.cardList, {
-            $push: [cardItem]
-        })
-        this.setState({cardList: nextState}, ()=> {
-            localStorage.setItem("todo-things", JSON.stringify(this.state.cardList))
-        })
-    }
-
-    toggleCardAndTask(cardId, taskIndex, taskName){
+    toggleCardAndTask(cardId, taskId, taskIndex){
         let cardIndex = this.props.cardList.findIndex((card) => card.id == cardId );
         let prevState = this.state;
 
-        let nextState = update(this.state.cardList, {
+        let newDoneValue;
+        let nextState = update(this.state.cards, {
             [cardIndex]: {
-                tasks: {
-                    [taskIndex]: {
-                        name: {
-                            $set: taskName
-                        }
-                    }
-                }
+               tasks: {
+                   [taskIndex]:{
+                       done: { $apply: (done) => {
+                           newDoneValue = !done
+                           return newDoneValue
+                       }}
+                   }
+               } 
             }
         })
 
-        this.setState({cardList: nextState},()=> {
-            localStorage.setItem("todo-things", JSON.stringify(this.state.cardList))
-        });
+        this.setState({cards: nextState});    
     }
 
     deleteCardAndTask(){
@@ -51,19 +56,22 @@ class KanbanBoard extends Component{
             <div className="app">
                 <List id="todo"
                       title = "TO DO"
-                      cards = {this.state.cardList.filter( (item) => item.status == 'todo')}
+                      cards = {this.props.cardList.filter( (item) => item.status == 'todo')}
+                      handleSaveTask= {this.handleSaveTask.bind(this)}
                       callBackfunc = {{addCardAndTask: this.addCardAndTask.bind(this),
                                        toggleCardAndTask: this.toggleCardAndTask.bind(this),
                                        deleteCardAndTask: this.deleteCardAndTask.bind(this),}}/>
                 <List id="in-progress"
                       title = "In Progress"
-                      cards = {this.state.cardList.filter( (item) => item.status == 'in-progress')}
+                      cards = {this.props.cardList.filter( (item) => item.status == 'in-progress')}
+                      handleSaveTask= {this.handleSaveTask.bind(this)}
                       callBackfunc = {{addCardAndTask: this.addCardAndTask.bind(this),
                                        toggleCardAndTask: this.toggleCardAndTask.bind(this),
                                        deleteCardAndTask: this.deleteCardAndTask.bind(this),}}/>
                 <List id="done"
                       title = "Done"
-                      cards = {this.state.cardList.filter( (item) => item.status == 'done')}
+                      cards = {this.props.cardList.filter( (item) => item.status == 'done')}
+                      handleSaveTask= {this.handleSaveTask.bind(this)}
                       callBackfunc = {{addCardAndTask: this.addCardAndTask.bind(this),
                                        toggleCardAndTask: this.toggleCardAndTask.bind(this),
                                        deleteCardAndTask: this.deleteCardAndTask.bind(this),}}/>
