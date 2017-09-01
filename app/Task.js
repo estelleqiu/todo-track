@@ -12,8 +12,9 @@ class Task extends Component{
     };
 
     handleInputChange(taskIndex, e){
-        const taskName = e.target.value;
-        this.props.callBackfunc.toggleCardAndTask(this.props.cardId ,taskIndex, taskName)
+        const taskType = e.target.type == 'checkbox' ? 'done': 'name'
+        const taskValue = e.target.type == 'checkbox' ? e.target.checked : e.target.value 
+        this.props.callBackfunc.toggleCardAndTask(this.props.cardId ,taskIndex, taskType, taskValue)
     }
 
     render(){
@@ -21,7 +22,7 @@ class Task extends Component{
             this.state.tasks.map((task, taskIndex) => {
                 return (
                     <li key= {task.id} id = {task.id}>
-                        <input type="checkbox"/>
+                        <input type="checkbox" onChange = {this.handleInputChange.bind(this,taskIndex)} defaultChecked = {task.done} />
                         <input ref= "taskName" className="taskName" onChange = {this.handleInputChange.bind(this,taskIndex)}  defaultValue = {task.name}/>
                         <a href="#" className="checklist__task--remove" onClick={
                             this.handleRemove.bind(this, task)}/>
