@@ -21,7 +21,7 @@ class KanbanBoard extends Component{
         })
     }
 
-    toggleCardAndTask(cardId, taskIndex, taskName){
+    toggleCardAndTask(cardId, taskIndex, taskType, taskValue){
         let cardIndex = this.props.cardList.findIndex((card) => card.id == cardId );
         let prevState = this.state;
 
@@ -29,8 +29,8 @@ class KanbanBoard extends Component{
             [cardIndex]: {
                 tasks: {
                     [taskIndex]: {
-                        name: {
-                            $set: taskName
+                        [taskType]: {
+                            $set: [taskValue]
                         }
                     }
                 }

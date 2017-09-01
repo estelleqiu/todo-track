@@ -22,18 +22,21 @@ class AddCardBoard extends Component{
     };
 
     _onChange(taskId,e) {
+        const taskItemType = e.target.type == 'checkbox' ? 'done': 'name'
+        const taskItemValue = e.target.type == 'checkbox' ? e.target.checked : e.target.value
+        console.log(taskItemValue)
         const taskIndex = this.state.tasks.findIndex((task) => task.id == taskId )
         var state = {};
-        if(e.target.name == 'tasks'){
+        if(e && e.target.name == 'tasks'){
             let nextState = update(this.state.tasks, {
                 [taskIndex]: {
-                    name: {
-                        $set: e.target.value
+                    [taskItemType]: {
+                        $set: taskItemValue
                     }
                 }
             })
             this.setState({tasks: nextState})
-        }else {
+        } else {
             state[e.target.name] =  (e.target.value).trim();
             this.setState(state);
         }

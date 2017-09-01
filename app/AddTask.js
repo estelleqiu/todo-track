@@ -11,7 +11,7 @@ class TaskList extends Component{
             return (<li key= {task.id}
                         id = {task.id}
                         className = "task-item">
-                        <input className = "task-checkbox" name = 'tasks' type="checkbox" onChange={this.props.onChange}/>
+                        <input className = "task-checkbox" name = 'tasks'  type="checkbox" onChange={this.props.onChange.bind(null, task.id)}/>
                         <input className = "task-name" name = "tasks" onChange={this.props.onChange.bind(null, task.id)}/>
                     </li>
             )
